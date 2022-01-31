@@ -1,5 +1,4 @@
-#ifndef TEST_H
-#define TEST_H
+#pragma once
 
 // Test is a base class for all tests.  It provides a command interface for
 // running tests (run) as well as a data member for recording the name of
@@ -12,7 +11,6 @@
 // particularly easy.
 
 #include <cmath>
-#include <vector>
 #include <sstream>
 #include <string>
 #include <cstring>
@@ -24,11 +22,16 @@
 class Test
 {
 public:
-    Test (const std::string& testName,
+    Test (std::string testName,
           std::string fileName,
           long lineNumber);
 
-	virtual ~Test();
+	virtual ~Test() = default;
+
+    Test(const Test &) = default;
+    Test(Test &&) = default;
+    Test &operator=(const Test &) = default;
+    Test &operator=(Test &&) = default;
 
     const std::string& getFileName() const;
     const long& getLineNumber() const;
@@ -115,42 +118,40 @@ private:
 // Use this when the things being check_equal_compared have a wostream inserter.
 
 
-inline void compare(const wchar_t* const expected, const wchar_t* const actual, TestResult& result, const char* file, int line)
+inline void compare(const wchar_t* const expected, const wchar_t* const actual, TestResult& result, const char* file, const int line)
 {
     if (wcscmp((expected), (actual)) != 0) {
-        std::ostringstream message;
-        message << "expected '" << (expected) << "' but was '" << (actual) << "'";
-        result.addFailure (Failure (message.str(), file, line));
-        return;
+        std::wostringstream message;
+        message << L"expected '" << (expected) << L"' but was '" << (actual) << L"'";
+        result.addFailure (WFailure (message.str(), file, line));
     }
 }
 
-template <typename T, typename U> void check_equal_wcompare(T expected, U actual, TestResult& result, const char* file, int line)
+template <typename T, typename U> void check_equal_wcompare(T expected, U actual, TestResult& result, const char* file, const int line)
 {
     if (! ((expected) == (actual))) {
         std::wostringstream message;
         message << L"expected '" << (expected) << L"' but was '" << (actual) << L"'";
         result.addFailure (WFailure (message.str(), file, line));
-        return;
     }
 }
 
-inline void check_equal_compare(const wchar_t* expected, const wchar_t* actual, TestResult& result, const char* file, int line)
+inline void check_equal_compare(const wchar_t* expected, const wchar_t* actual, TestResult& result, const char* file, const int line)
 {
     compare(expected, actual, result, file, line);
 }
 
-inline void check_equal_compare(wchar_t* expected, wchar_t* actual, TestResult& result, const char* file, int line)
+inline void check_equal_compare(wchar_t* expected, wchar_t* actual, TestResult& result, const char* file, const int line)
 {
     compare(expected, actual, result, file, line);
 }
 
-inline void check_equal_compare(const wchar_t* expected, wchar_t* actual, TestResult& result, const char* file, int line)
+inline void check_equal_compare(const wchar_t* expected, wchar_t* actual, TestResult& result, const char* file, const int line)
 {
     compare(expected, actual, result, file, line);
 }
 
-inline void check_equal_compare(wchar_t* expected, const wchar_t* actual, TestResult& result, const char* file, int line)
+inline void check_equal_compare(wchar_t* expected, const wchar_t* actual, TestResult& result, const char* file, const int line)
 {
     compare(expected, actual, result, file, line);
 }
@@ -162,42 +163,40 @@ inline void check_equal_compare(wchar_t* expected, const wchar_t* actual, TestRe
 
 // Use this when the things being check_equal_compared have an ostream inserter.
 
-template <typename T, typename U> void check_equal_compare(T expected, U actual, TestResult& result, const char* file, int line)
+template <typename T, typename U> void check_equal_compare(T expected, U actual, TestResult& result, const char* file, const int line)
 {
     if (! ((expected) == (actual))) {
         std::ostringstream message;
         message << "expected '" << (expected) << "' but was '" << (actual) << "'";
         result.addFailure (Failure (message.str(), file, line));
-        return;
     }
 }
 
-inline void compare(const char* expected, const char* actual, TestResult& result, const char* file, int line)
+inline void compare(const char* expected, const char* actual, TestResult& result, const char* file, const int line)
 {
     if (strcmp((expected), (actual)) != 0) {
         std::ostringstream message;
         message << "expected '" << (expected) << "' but was '" << (actual) << "'";
         result.addFailure (Failure (message.str(), file, line));
-        return;
     }
 }
 
-inline void check_equal_compare(const char* expected, const char* actual, TestResult& result, const char* file, int line)
+inline void check_equal_compare(const char* expected, const char* actual, TestResult& result, const char* file, const int line)
 {
     compare(expected, actual, result, file, line);
 }
 
-inline void check_equal_compare(char* expected, char* actual, TestResult& result, const char* file, int line)
+inline void check_equal_compare(char* expected, char* actual, TestResult& result, const char* file, const int line)
 {
     compare(expected, actual, result, file, line);
 }
 
-inline void check_equal_compare(const char* expected, char* actual, TestResult& result, const char* file, int line)
+inline void check_equal_compare(const char* expected, char* actual, TestResult& result, const char* file, const int line)
 {
     compare(expected, actual, result, file, line);
 }
 
-inline void check_equal_compare(char* expected, const char* actual, TestResult& result, const char* file, int line)
+inline void check_equal_compare(char* expected, const char* actual, TestResult& result, const char* file, const int line)
 {
     compare(expected, actual, result, file, line);
 }
@@ -206,5 +205,3 @@ inline void check_equal_compare(char* expected, const char* actual, TestResult& 
 {\
 	check_equal_compare(expected, actual, rEsUlT_, __FILE__, __LINE__); \
 }
-
-#endif

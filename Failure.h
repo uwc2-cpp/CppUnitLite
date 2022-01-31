@@ -1,6 +1,4 @@
-#ifndef FAILURE_H
-#define FAILURE_H
-
+#pragma once
 // Failure records the circumstances of a failing test.
 
 #include <string>
@@ -10,8 +8,8 @@ class Failure
 {
 public:
     Failure(
-        const std::string& theCondition,
-        const std::string& theFileName,
+        std::string theCondition,
+        std::string theFileName,
         long theLineNumber);
 
 	std::string condition;
@@ -21,4 +19,3 @@ public:
 
 std::ostream& operator<< (std::ostream& stream, Failure& failure);
 
-#endif

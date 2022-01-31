@@ -1,22 +1,19 @@
 #include "Test.h"
+
+#include <utility>
 #include "Failure.h"
 #include "TestRegistry.h"
 #include "TestResult.h"
-#include <cstring>
 
-Test::Test (const std::string& testName,
+Test::Test (std::string testName,
             std::string fileName,
-            long lineNumber)
+            const long lineNumber)
 :
-    myFileName (fileName),
+    myFileName (std::move(fileName)),
     myLineNumber (lineNumber),
-    myName (testName)
+    myName (std::move(testName))
 {
     TestRegistry::addTest (this);
-}
-
-Test::~Test()
-{
 }
 
 const std::string& Test::getFileName() const

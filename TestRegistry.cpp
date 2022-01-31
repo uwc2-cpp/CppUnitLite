@@ -23,40 +23,41 @@ void TestRegistry::add (Test *test) {
 }
 
 void TestRegistry::run (TestResult& result) {
-    int testCount = 0;
-    int errorCount = 0;
+    auto testCount = 0;
+    auto errorCount = 0;
     result.startTests ();
-    std::vector<Test *>::iterator it;
-    for (it = tests.begin (); it != tests.end (); ++it) {
+
+    for (auto& test : tests)
+    {
         ++testCount;
         try {
-            (*it)->run (result);
+            test->run (result);
         }
         catch (std::exception &e) {
             ++errorCount;
             std::cout << std::endl
-                      << (*it)->getFileName()
-                      << "(" << (*it)->getLineNumber() << ") : "
+                      << test->getFileName()
+                      << "(" << test->getLineNumber() << ") : "
                       << "Error: exception "
                       << "'" << e.what() << "'"
                       << " thrown in "
-                      << (*it)->getName()
+                      << test->getName()
                       << std::endl;
         }
         catch (...) {
             ++errorCount;
             std::cout << std::endl
-                      << (*it)->getFileName()
-                      << "(" << (*it)->getLineNumber() << ") : "
+                      << test->getFileName()
+                      << "(" << test->getLineNumber() << ") : "
                       << "Error: unknown exception thrown in "
-                      << (*it)->getName()
+                      << test->getName()
                       << std::endl;
         }
     }
     result.endTests ();
-    int failureCount = result.getFailureCount();
+    const auto failureCount = result.getFailureCount();
     if (failureCount > 0 || errorCount > 0) std::cout << std::endl;
     std::cout << testCount << " tests, "
-              << result.getFailureCount() << " failures, "
+              << failureCount << " failures, "
               << errorCount << " errors" << std::endl;
 }

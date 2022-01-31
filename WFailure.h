@@ -9,8 +9,8 @@ class WFailure
 {
 public:
     WFailure(
-        const std::wstring& theCondition,
-        const std::string& theFileName,
+        std::wstring theCondition,
+        std::string theFileName,
         long theLineNumber);
 
 	std::wstring condition;

@@ -1,11 +1,13 @@
 #include "WFailure.h"
 
+#include <utility>
+
 WFailure::WFailure(
-    const std::wstring& theCondition,
-    const std::string& theFileName,
-    long theLineNumber)
-    : condition(theCondition),
-    fileName(theFileName),
+    std::wstring theCondition,
+    std::string theFileName,
+    const long theLineNumber)
+    : condition(std::move(theCondition)),
+    fileName(std::move(theFileName)),
     lineNumber(theLineNumber)
 {
 }
@@ -14,7 +16,7 @@ std::wostream& operator<<(
     std::wostream& stream,
     WFailure& failure)
 {
-    std::wstring wFileName(failure.fileName.begin(), failure.fileName.end());
+    const std::wstring wFileName(failure.fileName.begin(), failure.fileName.end());
 
     stream << std::endl
            << wFileName

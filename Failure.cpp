@@ -1,11 +1,13 @@
 #include "Failure.h"
 
+#include <utility>
+
 Failure::Failure(
-    const std::string& theCondition,
-    const std::string& theFileName,
-    long theLineNumber)
-    : condition(theCondition),
-    fileName(theFileName),
+    std::string theCondition,
+    std::string theFileName,
+    const long theLineNumber)
+    : condition(std::move(theCondition)),
+    fileName(std::move(theFileName)),
     lineNumber(theLineNumber)
 {
 }
