@@ -1,6 +1,7 @@
 CC=g++
 CFLAGS=-I. -I./include/CppUnitLite
 CXXFLAGS += -std=c++20 -Wall -Werror
+# -std=c++20: valid for g++ 10 and greater.
 # -Wall: reports all warnings
 # -Werror: warnings reported as errors
 
