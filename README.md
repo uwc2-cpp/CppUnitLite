@@ -1,4 +1,4 @@
-# CppUnitLite-basic
+# CppUnitLite
 Used in UW P&CE Certificate Program in C++.
 
 Contains the CppUnitLite framework, which is a simple, cross-platform unit-testing framework, and an example project that uses it.
